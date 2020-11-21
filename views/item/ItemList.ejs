@@ -1,30 +1,37 @@
 <html>
     <head>
-        <meta http-equiv="Content-Security-Policy" content="default-src *;
-   img-src * 'self' data: https:; script-src 'self' 'unsafe-inline' 'unsafe-eval' *;
-   style-src  'self' 'unsafe-inline' *">
         <title></title>
         <% include ../source.ejs%>
+        <script src="/public/javascripts/item.js"></script>
     </head>
 
     <body>
         <%- include('../navbar.ejs', { html : ui });%>
         <section class="page-section mt-5">
             <div class="container" style="">
-                <div class="row justify-content-center">
-                    상품 목록
+                <div class="row justify-content-center mb-5">
+                    <p style="font-family: 'Helvetica Neue'" >
+                        상품 목록
+                    </p>
                 </div>
-                <div class="row justify-content-center">
-                    <%for(var i=0; i < _data.length; i++) {%>
-                        <div class="col-lg-4 col-md-4 col-sm-4 ">
-                            <img class="rounded" src=<%= _data[i].image_url%> alt=<%= _data[i].image_alt%> style="max-width: 100%; height : auto">
-                            <p> <%= _data[i].description%></p>
-                            <p><%= _data[i].region%></p>
-                            <p><%= _data[i].price%></p>
+                <div><hr></div>
+                <div class="row justify-content-center mt-3"  id="itemContainer">
+
+                    <%for(var i=0; i < _data.length; i++) { var url = "https://daangn.com"+ _data[i].url;%>
+                        <div class="col-lg-4 col-md-4 col-sm-4">
+                            <a href=<%= url%> >
+                                <img class="rounded" src=<%= _data[i].image_url%> alt=<%= _data[i].image_alt%> style="max-width: 100%; height : auto">
+                            </a>
+                                <p> <%= _data[i].description%></p>
+                                <p><%= _data[i].region%></p>
+                                <p><%= _data[i].price%></p>
+
                         </div>
                     <% } %>
-<!--                    <div class="col-lg-3 col-md-3 col-sm-2"><img class="rounded" src="/public/images/portfolio/cabin.png" alt="abc" width="250px" height="250px"></div>-->
-<!--                    <div class="col-lg-3 col-md-3 col-sm-2"><img class="rounded" src="/public/images/portfolio/cabin.png" alt="abc" width="250px" height="250px"></div>-->
+                </div>
+
+                <div class="row justify-content-center">
+                    <button class="btn btn-block btn-primary" type="button" id="moreBtn"><i class="fas fa-angle-down"></i>더보기</button>
                 </div>
 
             </div>
