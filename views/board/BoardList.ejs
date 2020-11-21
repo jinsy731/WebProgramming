@@ -1,0 +1,82 @@
+<html>
+    <head>
+        <title>Board</title>
+        <% include ../source.ejs%>
+        <script src="/public/javascripts/board.js"></script>
+    </head>
+
+    <body>
+        <%- include('../navbar.ejs', {html : ui});%>>
+
+        <!-- 게시판 -->
+        <section class="page-section" style="margin-top: 100px">
+
+            <div class="container">
+                <div class = "row">
+                    <table class="table table-striped table-hover" style="text-align:center; border:1px solid #dddddd">
+                        <thead>
+                        <tr>
+                            <th style="background-color: #eeeeee; text-align: center;">번호</th>
+
+                            <th style="background-color: #eeeeee; text-align: center;">제목</th>
+
+                            <th style="background-color: #eeeeee; text-align: center;">작성자</th>
+
+                            <th style="background-color: #eeeeee; text-align: center;">작성일</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <%
+                            for(var i = 0; i < list.length; i++) {
+                                var item = list[i];
+                        %>
+                            <tr class="table_item">
+                                <td><%= item.board_no%></td>
+                                <td><%= item.author%></td>
+                                <td><%= item.subject%></td>
+                                <td><%= item.date%></td>
+                            </tr>
+                        <%
+                            }
+                        %>
+
+                        </tbody>
+
+                    </table>
+                </div>
+
+
+                <div class="row justify-content-between">
+
+                    <div></div>
+
+                    <nav aria-label="Page navigation example" >
+                        <ul class="pagination">
+                            <li class="page-item">
+                                <a class="page-link" href="#!" aria-label="Previous">
+                                    <span aria-hidden="true">&laquo;</span>
+                                    <span class="sr-only">Previous</span>
+                                </a>
+                            </li>
+                            <li class="page-item"><a class="page-link" href="#!">1</a></li>
+                            <li class="page-item"><a class="page-link" href="#!">2</a></li>
+                            <li class="page-item"><a class="page-link" href="#!">3</a></li>
+                            <li class="page-item">
+                                <a class="page-link" href="#!" aria-label="Next">
+                                    <span aria-hidden="true">&raquo;</span>
+                                    <span class="sr-only">Next</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </nav>
+                    <button class="btn btn-primary pull-right right float-right" id="btn_write">글쓰기</button>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- footer section -->
+        <% include ../footer.ejs%>
+    </body>
+</html>
+

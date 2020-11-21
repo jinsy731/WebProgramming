@@ -1,0 +1,35 @@
+<html>
+    <head>
+        <meta http-equiv="Content-Security-Policy" content="default-src *;
+   img-src * 'self' data: https:; script-src 'self' 'unsafe-inline' 'unsafe-eval' *;
+   style-src  'self' 'unsafe-inline' *">
+        <title></title>
+        <% include ../source.ejs%>
+    </head>
+
+    <body>
+        <%- include('../navbar.ejs', { html : ui });%>
+        <section class="page-section mt-5">
+            <div class="container" style="">
+                <div class="row justify-content-center">
+                    상품 목록
+                </div>
+                <div class="row justify-content-center">
+                    <%for(var i=0; i < _data.length; i++) {%>
+                        <div class="col-lg-4 col-md-4 col-sm-4 ">
+                            <img class="rounded" src=<%= _data[i].image_url%> alt=<%= _data[i].image_alt%> style="max-width: 100%; height : auto">
+                            <p> <%= _data[i].description%></p>
+                            <p><%= _data[i].region%></p>
+                            <p><%= _data[i].price%></p>
+                        </div>
+                    <% } %>
+<!--                    <div class="col-lg-3 col-md-3 col-sm-2"><img class="rounded" src="/public/images/portfolio/cabin.png" alt="abc" width="250px" height="250px"></div>-->
+<!--                    <div class="col-lg-3 col-md-3 col-sm-2"><img class="rounded" src="/public/images/portfolio/cabin.png" alt="abc" width="250px" height="250px"></div>-->
+                </div>
+
+            </div>
+        </section>
+
+        <% include ../footer.ejs%>
+    </body>
+</html>

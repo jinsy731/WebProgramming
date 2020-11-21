@@ -1,0 +1,111 @@
+
+<html>
+    <head>
+        <title>Travel Guide :: ${board_content.board_subject}</title>
+
+        <% include ../source.ejs%>
+        <script src="/public/javascripts/board.js"></script>
+
+  <!--      <script>
+            /*$(function () {
+
+            <c:if test="${sessionScope.sessionID != null}" var="loginCheck"></c:if>
+
+                $('#commentSubmit').click( function() {
+                    var check = '<c:out value="${loginCheck}"/>';
+                    if( check == 'false') {
+                        alert("로그인 후 이용 가능합니다.");
+                        return false;
+                    }
+                    var sendData = {
+                        comment_id : '${sessionScope.sessionID}',
+                        content : $('#commentInput').val(),
+                        board_num : ${board_content.board_num}
+                    };
+
+                    $.ajax( {
+                        url : "BoardWriteCommentAction.board",
+                        data : sendData,
+                        dataType : "text",
+
+                        success : function(data) {
+                            if(data.trim() == 'failed') {
+                                alert("등록 실패");
+                            }
+                            else if(data.trim() == 'success') {
+                                location.reload();
+                            }
+                        }
+                    });
+                })
+            })*/
+            // 로그인 시 글 작성 가능 기능
+            // 글 작성 버튼 클릭시 기능 스크립트 작성
+        </script>-->
+    </head>
+    <body>
+
+    <%- include('../navbar.ejs', { html : ui });%>
+
+    <section class="page-section mt-5">
+
+        <div class="container d-flex flex-column shadow-sm" style="max-width : 720px">
+
+            <!-- Subject -->
+            <div class="row">
+                <div class="col-lg-10 col-sm-10">
+                    <p class="font-weight-bold"><h4><%= board.subject%></h4></p>
+                </div>
+                <div class="col-lg-2 col-sm-2 pt-4">
+                    <% if(board.author == id) { %>
+                        <a href="" class="mx-1"><i class="far fa-trash-alt" style="width:12px; height: 12px; color: #0b2e13"></i></a>
+                        <a href="" class="mx-1"><i class="far fa-edit" style="width:12px; height: 12px; color: #0b2e13"></i></a>
+                    <% } %>
+                </div>
+
+            </div>
+            <div class="row justify-content-between mx-2" style= "font-size : 8pt">
+                <div>작성자 : <%= board.author%></div>
+                <div></div>
+                <div>작성일 : <%= board.date%></div>
+            </div>
+            <div><hr></div>
+
+            <!-- Content -->
+            <p class="ml-3"><%= board.content%></p>
+            <div><hr></div>
+            <div class="row ml-2" style="font-size: 12pt;">
+                <div class="col">댓글</div>
+                <div class="col">
+
+
+                </div>
+            </div>
+
+            <% for(var i =0; i < comment.length; i++) {%>
+                <div><hr></div>
+                <div class='row'>
+                    <div class='col-sm-2 col-lg-2 text-center' style='font-size : 10pt'><%= comment[i].comment_author%></div>
+                    <div class='col-sm-8 col-lg-8'><%= comment[i].comment_content%></div>
+                    <div class='col-sm-2 col-lg-2' style='font-size : 8pt'><%= comment[i].comment_date%></div>
+                </div>
+            <% } %>
+
+
+            <div class="row my-3">
+                <div class="col-lg- col-sm-10">
+                    <textarea class="form-control" id="commentInput" style="height: 100px; resize:none" placeholder="댓글 입력"></textarea>
+                </div>
+                <div class="col-lg-2 col-sm-2">
+                    <button class="btn btn-dark" type="button" id="commentSubmit"><p style="font-size: 10pt">등록</p></button>
+                </div>
+            </div>
+
+        </div>
+
+    </section>
+
+    <% include ../footer.ejs%>
+
+    </body>
+</html>
