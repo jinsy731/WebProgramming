@@ -1,0 +1,54 @@
+<html>
+    <head>
+        <title></title>
+        <% include ../source.ejs%>
+
+        <script>
+            $(function() {
+                $('#addItem').click( function() {
+                    location.href = "/bid/additem";
+                })
+            })
+        </script>
+
+    </head>
+
+    <body>
+    <%- include('../navbar.ejs', { html : ui });%>
+    <section class="page-section mt-5">
+        <div class="container" style="">
+            <div class="row justify-content-center">
+                <p style="font-family: 'Helvetica Neue'" >
+                    상품 목록
+                </p>
+            </div>
+            <div><hr></div>
+            <div class="row justify-content-center mt-3"  id="itemContainer">
+
+                <%for(var i=0; i < list.length; i++) { %>
+                <div class="col-lg-4 col-md-4 col-sm-4 bid-item">
+                    <a href="/bid/item/<%= list[i].item_no%>" >
+                        <img class="rounded" src="<%= list[i].item_image_src%>" style="width : 200px; height : 200px; object-fit: cover">
+                    </a>
+                    <p><%= list[i].item_name%></p>
+                    <p><span class="bid-item-sub">시작가  </span><%= list[i].item_start_price%></p>
+                    <p><span class="bid-item-sub">최고가  </span><%= list[i].item_max_price%></p>
+                    <p><span class="bid-item-sub">현재 입찰가  </span><%= list[i].item_current_price%></p>
+                    <p><%= list[i].item_date%></p>
+
+
+                </div>
+                <% } %>
+            </div>
+
+            <div class="row justify-content-center">
+                <button class="btn btn-block btn-primary" type="button" id="moreBtn"><i class="fas fa-angle-down"></i>더보기</button>
+            </div>
+            <button class="btn btn-secondary" id="addItem">상품 등록</button>
+
+        </div>
+    </section>
+
+    <% include ../footer.ejs%>
+    </body>
+</html>

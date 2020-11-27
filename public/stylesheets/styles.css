@@ -10239,3 +10239,25 @@ form .row:first-child .floating-label-form-group {
 .copyright {
   background-color: #1a252f;
 }
+
+.bid-item * {
+  font-family: "Goudy Old Style";
+}
+.bid-item-name {
+  font-weight: bold;
+}
+.bid-item-img {
+  max-width: 100%;
+  height: auto;
+}
+.bid-item-sub {
+  font-size : 5px;
+  color : #a9a9a9;
+}
+.bid-timer {
+  font-size : 20px;
+  font-weight: bold;
+}
+.bid-btn-text {
+  font-size : 5px;
+}

@@ -1,0 +1,167 @@
+<html>
+<head>
+    <title></title>
+    <% include ../source.ejs%>
+
+    <style>
+
+
+    </style>
+
+    <script>
+        $(function() {
+            // 경매 시간 타이머
+            var timer = setInterval(function() {
+                var end = moment($('#item_date').val()).add(48, 'hours');
+                var current = moment().format("YYYY-MM-DD HH:mm:ss");
+
+                var duration = moment.duration(end.diff(current));
+                var second = duration.asSeconds();
+                var minute = 0;
+                var hour = 0;
+
+
+                if(second >= 60) {
+                    minute = parseInt(second/60);
+                    second = second % 60;
+
+                    if(minute >= 60) {
+                        hour = parseInt(minute/60);
+                        minute = minute%60;
+                    }
+                    $('#bid_countdown').text(hour+":"+minute+":"+second);
+                }
+
+                else if (second <= 0 ) {
+                    second = 0;
+                    minute = 0;
+                    hour = 0;
+                    $('#bid_countdown').text(hour+":"+minute+":"+second);
+                    $('#ask_btn').attr('disabled', true);
+                    clearInterval(timer);
+                }
+
+            }, 1000);
+            // timer end
+
+
+            $('#ask_btn').click( function() {
+                if('#')
+                loginCheck(updatePrice(sendPrice));
+            });
+
+        });// document ready end
+
+        function loginCheck(callback) {
+            $.ajax({
+                url : '/auth/logincheck',
+                type : "get",
+                dataType : "text",
+
+                success : function(result) {
+                    if (data.trim() === 'false') {
+                        alert('로그인 후 이용 가능합니다.');
+                    }
+                    else if(data.trim() === 'true') {
+                        callback();
+                    }
+                }
+            })
+        }
+
+        function updatePrice(callback) {
+            $.ajax({
+                url : '/bid/updateprice/'+$('#item_no').val(),
+                type : "get",
+                dataType : "text",
+
+                success : function(data) {
+                    console.log(data);
+                    if(parseInt(data) > parseInt($('#ask_price').text())) {
+                        alert('data' + data + 'current_price' + $('#ask_price').text());
+                        alert('현재 최고가가 갱신되었습니다. 다시 시도해주시기 바랍니다.');
+                        location.reload();
+                    }
+                    else {
+                        callback();
+                    }
+                },
+                complete : function() {
+                    console.log('complete');
+                },
+                error : function() {
+                    console.log('error');
+                }
+            }); // update Current Price
+        }
+
+        function sendPrice() {
+            var data = {
+                price :$('#ask_price').val(),
+                item_no : $('#item_no').val()
+            }
+
+            if(data.price < parseInt($('#current_price').text()) || data.price > parseInt($('#max_price').text())) {
+                alert('입력 가격은 현재가보다 높고, 최고가보다 낮아야합니다.');
+                return false;
+            }
+            $.ajax({
+                url : "/bid/askprice",
+                type : "post",
+                data : data,
+                dataType : "text",
+
+                success : function(result) {
+                    console.log(result);
+                    location.reload();
+                },
+
+                error : function(err) {
+                    console.log(err);
+                }
+
+            }); // insert ask_price
+        }
+    </script>
+</head>
+
+<body>
+<%- include('../navbar.ejs', { html : ui });%>
+<section class="page-section mt-5">
+    <div class="container shadow-sm" style="max-width: 1080px">
+        <div class="row justify-content-center">
+            <div class="col-md-6 col-lg-6 col-sm-6">
+                <img class="bid-item-img" src = "<%= item.item_image_src%>" style="width : 500px; height: 500px; object-fit: cover" >
+            </div>
+
+            <div class="col-md-6 col-lg-6 col-sm-6 bid-item">
+
+                <p><h4 class="bid-item-name"><%= item.item_name%></h4></p>
+                <div><hr></div>
+                <span class="bid-item-sub">시작가 </span><p id="start_price"><%= item.item_start_price%></p>
+                <span class="bid-item-sub">최대가 </span><p id="max_price"><%= item.item_max_price%></p>
+                <% if(item.item_current_bid_id == null) { %>
+                    <span class="bid-item-sub">현재 입찰가 </span>
+                    <p id="current_price"><%= item.item_current_price%></p>
+                <% } else if(item.item_current_bid_id != null){ %>
+                    <span class="bid-item-sub">현재 입찰가 | 현재 입찰자 : <%= item.item_current_bid_id%></span>
+                    <p id="current_price"><%= item.item_current_price%></p>
+                <% } %>
+
+                    <span class="bid-item-sub">입찰까지 남은 시간 </span><p class="bid-timer" id="bid_countdown" ></p>
+                <input type="hidden" id="item_date" value="<%= item.item_date%>">
+                <input type="hidden" id="item_no" value="<%= item.item_no%>">
+                <input type="text" id="ask_price">
+                <button class="btn btn-outline-success bid-btn-text ml-4" id="ask_btn" disabled="false">입찰</button>
+                <div><hr></div>
+                <p><%= item.item_description%></p>
+
+
+            </div>
+        </div>
+    </div>
+</section>
+
+<% include ../footer.ejs%>
+</body>
+</html>

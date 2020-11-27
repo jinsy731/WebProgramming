@@ -33,6 +33,7 @@ var usersRouter = require('./routes/users');
 var authRouter = require('./routes/auth')(passport);
 var boardRouter = require('./routes/board');
 var itemRouter = require('./routes/item');
+var bidRouter = require('./routes/bid.js');
 
 // app.use(helmet());
 app.use(compression());
@@ -52,6 +53,7 @@ app.use('/users', usersRouter);
 app.use('/auth', authRouter);
 app.use('/board', boardRouter);
 app.use('/item', itemRouter);
+app.use('/bid', bidRouter);
 
 // use res.local to expose data to all templates.
 app.use(function(req, res, next) {
