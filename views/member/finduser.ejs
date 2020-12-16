@@ -1,0 +1,50 @@
+<html>
+    <head>
+        <% include ../source.ejs%>
+
+        <script>
+            function findFormCheck() {
+                var id = $('#findID').val();
+                var hint = $('#findHint').val();
+
+                if(id === '' || hint === '') {
+                    alert("정보를 모두 입력해주세요");
+                    return false;
+                }
+            }
+
+        </script>
+    </head>
+    <body>
+    <section class="page-section">
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    <p><h5>비밀번호 찾기</h5></p>
+                    <hr class="custom-hr">
+                </div>
+            </div>
+            <div class="row justify-content-center align-content-center align-content-center align-self-center">
+                <div class="col">
+                    <form action="/users/finduser_action" method="post" onsubmit="return findFormCheck()">
+                        <div class="form-group">
+                            <label for=""></label>
+                            <input id="findID" type="text" placeholder="ID" name="id">
+                        </div>
+
+                        <div class="form-group">
+                            <label for=""></label>
+                            <input id="findHint" type="text" placeholder="Hint" name="hint">
+                        </div>
+
+                        <button class="btn btn-secondary">제출</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    </body>
+</html>
+

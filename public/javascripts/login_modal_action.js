@@ -1,14 +1,5 @@
 $(function () {
 
-    // LoginSubmit Event Handler
-    $("#loginBtn").on("click", function (event) {
-
-        if ($("#defaultLoginFormEmail").val() == '' || $("#defaultLoginFormPassword").val() == '') {
-            alert("아이디와 비밀번호를 입력해주세요.");
-            return false;
-        }
-    });
-
         /*var form_data = {
             id: $("#id").val(),
             pw: $("#pw").val()
@@ -36,6 +27,8 @@ $(function () {
         });
     });  // loginSubmit Event Handler end*/
 
+
+
     $('#joinSubmit').click( function() {
         location.href = "/auth/join";
 
@@ -43,3 +36,17 @@ $(function () {
 
 
 }); // document.ready end
+
+function loginInputCheck() {
+    $('#prevUrl').val(location.href);
+    var $id = $("#formId");
+    var $pw = $("#formPw");
+    if ($id.val() == '' || $pw.val() == '') {
+        alert("아이디와 비밀번호를 입력해주세요.");
+        return false;
+    } else {
+        $("#USER_ID").val(SHA256($pw.val()));
+        console.log($("#USER_ID").val());
+        $pw.val("");
+    }
+}

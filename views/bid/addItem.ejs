@@ -3,43 +3,80 @@
         <title></title>
         <% include ../source.ejs%>
 
-        <!--<script>
-            $(function () {
+        <script>
+            $(function() {
                 $('#bid_item_submit').click( function(event) {
-                    event.preventDefault();
-                    console.log($('#item_image').val());
-                })
-            })
-        </script>-->
+                    var ext = $('#item_image').val().split('.')[1];
+                    if($('#item_name').val() === '' || $('#item_image').val()==='' || $('#item_description').val()==='' || $('#item_start_price').val()==='' || $('#item_max_price').val()==='' ||
+                        parseInt($('#item_start_price').val()) >= parseInt($('#item_max_price').val())) {
+                        alert('정보를 모두 입력해주세요');
+                        return false;
+                    }
+                    else {
+                        if(ext !== 'png' && ext !== 'jpg' && ext !== 'jpeg' && ext !== 'gif') {
+                            alert('이미지 파일 확장자를 확인해주세요(png, jpg, jpeg, gif만 가능합니다.');
+                            return false;
+                        }
+                    }
+                });
+            });
+
+
+        </script>
     </head>
     <body>
         <%- include('../navbar.ejs', { html : ui });%>
 
         <section class="page-section">
-            <div class="container">
-                <form method="post" action="/bid/additem_process">
-                    <div class="form-group">
-                        <label for="item_name">제품명</label>
-                        <input type="text" class="form-control" id="item_name" name="item_name">
+            <div class="container shadow-sm">
+                <div class="row">
+                    <div class="col">
+                        <p><h5>ADD ITEM</h5></p>
+                        <hr class="custom-hr">
                     </div>
-                    <div class="form-group">
-                        <label for="item_image">제품 사진</label>
-                        <input type="file" id="item_image" name="item_image">
-                    </div>
-                    <div class="form-group">
-                        <label for="item_start_price">시작가</label>
-                        <input type="number" class="form-control" id="item_start_price" name="item_start_price">
-                    </div>
-                    <div class="form-group">
-                        <label for="item_max_price">최고가</label>
-                        <input type="number" class="form-control" id="item_max_price" name="item_max_price">
-                    </div>
-                    <div class="form-group">
-                        <textarea name="item_description" id="item_description" class='form-control' cols="30" rows="10" style="resize: none" placeholder="제품 설명"></textarea>
-                    </div>
+                </div>
+                <div class="row justify-content-center">
+                    <div class="col-md-8 col-sm-8 com-lg-8">
+                        <!-- multer로 파일 업로드할 때 enctype 속성 넣어줘야 함 -->
+                        <form method="post" action="/bid/additem_process" enctype="multipart/form-data">
+                            <div class="form-group">
+                                <label for="item_name">제품명</label>
+                                <input type="text" class="form-control" id="item_name" name="item_name">
+                            </div>
+                            <div class="form-group">
+                                <label for="item_image">제품 사진(png,jpg,jpef,gif/ 5MB 미만)</label><br>
+                                <input type="file" id="item_image" name="item_image">
+                            </div>
+                            <div class="form-group">
+                                <label for="item_start_price">시작가</label>
+                                <input type="number" class="form-control" id="item_start_price" name="item_start_price">
+                            </div>
+                            <div class="form-group">
+                                <label for="item_max_price">최고가</label>
+                                <input type="number" class="form-control" id="item_max_price" name="item_max_price">
+                            </div>
 
-                    <button type="submit" id="bid_item_submit">제출</button>
-                </form>
+                            <p>경매시간</p>
+                           <div class="custom-control custom-radio">
+                                <input type="radio" id="customRadio24" name="durationRadio" class="custom-control-input" value="24">
+                                <label class="custom-control-label" for="customRadio24">24시간</label>
+                            </div>
+                            <div class="custom-control custom-radio">
+                                <input type="radio" id="customRadio48" name="durationRadio" class="custom-control-input" value="48">
+                                <label class="custom-control-label" for="customRadio48">48시간</label>
+                            </div>
+                            <br>
+
+                            <p>제품 설명</p>
+                            <div class="form-group">
+                                <textarea name="item_description" id="item_description" class='form-control' cols="30" rows="10" style="resize: none" placeholder="제품 설명"></textarea>
+                            </div>
+
+                            <button type="submit" class="btn btn-secondary"id="bid_item_submit">제출</button>
+                        </form>
+                    </div>
+                </div>
+
             </div>
         </section>
 

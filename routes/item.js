@@ -6,8 +6,13 @@ var logincheck = require('../lib/logincheck');
 var store = require('store2');
 
 
-router.get('/itemlist/:item', function(req,res) {
-    var item = req.params.item;
+router.get('/itemsearch', function(req, res) {
+    var statusUI = logincheck.statusUI(req, res);
+    res.render('./item/itemlist_search.ejs', { ui : statusUI});
+})
+
+router.get('/itemlist', function(req,res) {
+    var item = req.query.item;
     var page_num = 1;
 
     var getHtml = async function (item, page_num) {
@@ -43,7 +48,7 @@ router.get('/itemlist/:item', function(req,res) {
             return ulList;
         })
         .then(result => {
-            console.log(result);
+            //console.log(result);
             var statusUI = logincheck.statusUI(req, res);
             res.render('./item/ItemList.ejs', {ui: statusUI, _data: result});
         });
@@ -100,5 +105,16 @@ router.post('/moreitem', function(req, res) {
            console.log(_data);
        });*/
 });
+
+
+router.get('/crawling', function(req, res) {
+
+
+
+ href="https://cafe.naver.com/ca-fe/ArticleRead.nhn?clubid=10050146&amp;page=2&amp;inCafeSearch=true&amp;searchBy=0&amp;query=%EC%8A%A4%ED%83%A0%EB%93%9C&amp;includeAll=&amp;exclude=&amp;include=&amp;exact=&amp;searchdate=all&amp;media=0&amp;sortBy=date&amp;articleid=805629454&amp;referrerAllArticles=true"
+
+
+
+})
 
 module.exports = router;

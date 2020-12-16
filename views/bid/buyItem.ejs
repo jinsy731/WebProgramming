@@ -1,0 +1,38 @@
+<html>
+<head>
+    <title></title>
+    <% include ../source.ejs%>
+
+    <style>
+        .buyitem-img {
+            width: 200px;
+            height: 200px;
+            object-fit: cover;
+            overflow: auto;
+        }
+    </style>
+</head>
+<body>
+<%- include('../navbar.ejs', { html : ui });%>
+
+<section class="page-section">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-6 col-sm-6 col-lg-6 align-self-center">
+                <img class="img-fluid buyitem-img" src="<%= item.item_image_src%>" alt="item_image"><br>
+                <p><span class="bid-item-sub mr-3">상품명 </span><%= item.item_name%></p>
+                <p><span class="bid-item-sub mr-3">가격</span><%= item.item_current_price%></p>
+            </div>
+            <div class="col-md-6 col-sm-6 col-lg-6 align-self-center">
+
+            </div>
+        </div>
+    </div>
+</section>
+
+
+
+<% include ../footer.ejs%>
+
+</body>
+</html>

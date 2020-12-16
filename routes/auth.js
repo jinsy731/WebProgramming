@@ -2,12 +2,19 @@ var express = require('express');
 var db = require('../lib/db');
 var logincheck = require('../lib/logincheck');
 var router = express.Router();
-
 module.exports = function(passport) {
 
+    // var prevUrl;
+    // router.use('/', function(req, res, next) {
+    //     prevUrl = req.body.prevUrl;
+    //     console.log('prevUrl', prevUrl);
+    //     return next(prevUrl);
+    // });
+
     router.post('/login',
-        passport.authenticate('local', { successRedirect: '/',
-            failureRedirect: '/' }));
+        passport.authenticate('local', { successRedirect: '/auth/successCallback',
+                                        failureRedirect: '/auth/failureCallback',
+                                        failureFlash : true}));
 
     router.get('/logout', function (request, response) {
         request.logout();
@@ -24,35 +31,22 @@ module.exports = function(passport) {
         res.send(check);
     })
 
-    router.get('/join', function(req, res) {
-        res.render('./member/JoinForm');
-        // ./member와 같이 앞에 현재 경로 나타내줘야함
+    router.get('/failureCallback', function(req,res) {
+       var fmsg = req.flash().error[0];
+
+       if(fmsg === "Incorrect ID") {
+            res.send("<script> alert('잘못된 아이디입니다.'); history.back(); </script>");
+       }
+       else {
+           res.send("<script> alert('잘못된 비밀번호입니다.'); history.back(); </script>");
+       }
+    });
+
+    router.get('/successCallback', function(req, res) {
+       res.send('<script> location.href = "/";  </script>');
     });
 
 
-    router.post('/join_action', function(req, res) {
-        var post = req.body;
-        console.log(post);
-        db.query('insert into user_info values(?,?,?,?,?,?,?,?,?);',
-            [post.id, post.pw, post.email, post.name, post.addr, post.phone, post.gender, post.birth, post.hint],
-            function (error, results, fields) {
-                if (error) {
-                    return db.rollback(function () {
-                        throw error;
-                    });
-                }
-                db.commit(function (err) {
-                    if (err) {
-                        return connection.rollback(function () {
-                            throw err;
-                        });
-                    }
-                    console.log('success!');
-                    res.redirect('/');
-                });
-            }
-        );
-    });
 
     return router;
 }

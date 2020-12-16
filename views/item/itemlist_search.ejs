@@ -1,0 +1,50 @@
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Travel Guide :: Join</title>
+
+        <% include ../source.ejs%>
+
+        <style>
+            .search-container {
+
+                margin-bottom : 200px;
+            }
+        </style>
+
+    </head>
+
+    <body id="page-top">
+
+    <!-- navbar include -->
+    <%- include('../navbar.ejs', { html : ui });%>
+
+    <section class="page-section">
+        <div class="container search-container">
+            <div class="row">
+                <div class="col">
+                    <p><h5>중고거래</h5></p>
+                    <hr class="custom-hr">
+                </div>
+            </div>
+            <div class="row justify-content-center">
+                <form action="/item/itemlist" method="get">
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="" aria-label="" aria-describedby="basic-addon1" name="item">
+                        <div class="input-group-append">
+                            <button class="btn btn-success" type="submit">검색</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+
+
+
+    <% include ../footer.ejs%>
+
+    </body>
+</html>

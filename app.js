@@ -4,9 +4,10 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var session = require('express-session');
-// var FileStore = require('session-file-store')(session);
+var FileStore = require('session-file-store')(session);
 var compression = require('compression');
 var helmet = require('helmet');
+var flash = require('connect-flash');
 
 var app = express();
 
@@ -44,7 +45,8 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname)));
 // express.static 미들웨어의 path를 public으로 하면 정적 파일에 접근할 때 경로가 /public..일때 오류남.
 // express.static 미들웨어의 path 설정값을 위와 같이 해야 /public 으로 접근할 때 오류나지 않음.
-
+app.use(flash());
+// connect-flash 미들웨어는 express-session과 cookie-parser를 사용하므로 이것들보다 뒤에 위치해야함.
 
 
 // router middleware use

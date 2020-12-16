@@ -1,18 +1,22 @@
 
 <!-- Navigation-->
-<nav class="navbar navbar-expand-lg bg-secondary text-uppercase fixed-top" id="mainNav">
+<nav class="navbar navbar-expand-lg text-uppercase fixed-top" id="mainNav">
     <div class="container">
-        <a class="navbar-brand js-scroll-trigger" href="/">Web Project</a>
+        <a class="navbar-brand js-scroll-trigger" href="/">Online Auction</a>
         <button class="navbar-toggler navbar-toggler-right text-uppercase font-weight-bold bg-primary text-white rounded" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
             Menu
             <i class="fas fa-bars"></i>
         </button>
         <div class="collapse navbar-collapse" id="navbarResponsive">
             <ul class="navbar-nav ml-auto">
-                <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="#portfolio">Portfolio</a></li>
-                <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="#about">About</a></li>
-                <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="#contact">Contact</a></li>
-                <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="/board/boardlist/1">Board</a></li>
+<!--                <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="#portfolio">Portfolio</a></li>-->
+<!--                <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="#about">About</a></li>-->
+<!--                <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="#contact">Contact</a></li>-->
+                <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="/board/boardlist/1">게시판</a></li>
+                <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="/bid/itemlist">경매장</a></li>
+                <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="/item/itemsearch">마켓</a></li>
+                <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="/users/mypage">마이 페이지</a></li>
+
                 <!--  로그인과 비로그인 상태의 Login, Logout 표시 전환-->
                 <%- html%>
 <!--                <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" data-toggle="modal" data-target="#loginModal">Login</a></li>-->
@@ -33,45 +37,17 @@
             </div>
             <div class="modal-body">
 
-            <!--<form id="loginForm" name="sentloginInfo" method="post" >
-                    <div class="row">
-                        <div class="col-lg-10 mx-auto">
-
-                            <div class="control-group">
-                                <div class="form-group floating-label-form-group controls mb-0">
-                                    <label>ID</label>
-                                    <input class="form-control" id="id" name="id" type="text" placeholder="ID" required="required" data-validation-required-message="Please enter your ID." />
-                                    <p class="help-block text-danger"></p>
-                                </div>
-                            </div>
-
-                            <div class="control-group">
-                                <div class="form-group floating-label-form-group controls mb-0">
-                                    <label>Password</label>
-                                    <input class="form-control" id="pw" name="pw" type="password" placeholder="Password" required="required" data-validation-required-message="Please enter your Password." />
-                                    <p class="help-block text-danger"></p>
-                                </div>
-                            </div>
-
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" id="joinSubmit">Join</button>
-                    <button type="submit" class="btn btn-primary" id="loginSubmit">Login</button>
-                </div>
-            </form>-->
-
                 <!-- Default form login -->
-                <form class="text-center border border-light p-5" method="post" action="/auth/login">
+                <form class="text-center border border-light p-5" method="post" action="/auth/login" onsubmit="return loginInputCheck()">
 
                     <p class="h4 mb-4">Sign in</p>
 
                     <!-- Email -->
-                    <input type="text" id="defaultLoginFormEmail" class="form-control mb-4" placeholder="E-mail" name="id">
+                    <input type="text" id="formId" class="form-control mb-4" placeholder="아이디" name="id">
 
                     <!-- Password -->
-                    <input type="password" id="defaultLoginFormPassword" class="form-control mb-4" placeholder="Password" name="pw">
+                    <input type="password" id="formPw" class="form-control mb-4" placeholder="비밀번호">
+                    <input type="hidden" id="USER_ID" value="defualt" name="pw">
 
                     <div class="d-flex justify-content-around">
                         <div>
@@ -83,25 +59,18 @@
                         </div>
                         <div>
                             <!-- Forgot password -->
-                            <a href="">Forgot password?</a>
+                            <a target="_blank" href="/users/finduser" onClick="window.open('/users/finduser ','pagename','resizable,height=500,width=400,top=200,left=600'); return false;">Forgot password?</a>
                         </div>
                     </div>
 
                     <!-- Sign in button -->
                     <button class="btn btn-info btn-block my-4" type="submit" id="loginBtn">Sign in</button>
-
+                    <input type="hidden" id="prevUrl" name="prevUrl">
                     <!-- Register -->
                     <p>Not a member?
-                        <a href="">Register</a>
+                        <a href="/users/join">Register</a>
                     </p>
 
-                    <!-- Social login -->
-                    <p>or sign in with:</p>
-
-                    <a href="#" class="mx-2" role="button"><i class="fab fa-facebook-f light-blue-text"></i></a>
-                    <a href="#" class="mx-2" role="button"><i class="fab fa-twitter light-blue-text"></i></a>
-                    <a href="#" class="mx-2" role="button"><i class="fab fa-linkedin-in light-blue-text"></i></a>
-                    <a href="#" class="mx-2" role="button"><i class="fab fa-github light-blue-text"></i></a>
 
                 </form>
                 <!-- Default form login -->

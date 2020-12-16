@@ -11,7 +11,6 @@ $(function() {
                 dataType: 'text',
 
                 success : function (data) {
-                    console.log('check ajax data', data)
                     if (data.trim() === 'false') {
                         result = false;
                     }
@@ -38,6 +37,14 @@ $(function() {
         var num = $(this).children().eq(0).text();
         location.href = "/board/content/"+num;
     })
+
+    $('#deleteBtn').click(function() {
+        var result = confirm("삭제하시겠습니까?");
+        if(!result) {
+            return false;
+        }
+    })
+
 
     $('#commentSubmit').click( function() {
 
@@ -70,6 +77,10 @@ $(function() {
 
         }); // ajax end
 
+    });
+
+    $('#listBtn').click(function() {
+        history.back();
     })
 
 });

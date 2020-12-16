@@ -12,14 +12,13 @@
     <body id="page-top">
 
         <!-- navbar include -->
-        <% include ../navbar.ejs%>>
-
+        <%- include('../navbar.ejs', { html : ui });%>
 
         <!-- form part -->
         <section id="content" class = "page-section" style="margin-top : 100px">
 
             <div class="container">
-                <form action="/auth/join_action" method="post" id="joinform">
+                <form action="/users/join_action" method="post" id="joinform" onsubmit="return inputCheck(event)">
                     <div class="row justify-content-center">  <!-- row에서 정렬해야 정렬됨 -->
                         <div class="col-lg-5 col-sm-6">
                             <div class="form-group">
@@ -28,7 +27,8 @@
                             </div>
                             <div class="form-group">
                                 <label for="pw" >Password</label>
-                                <input type="password" class="form-control" id="join_pw" name="pw">
+                                <input type="password" class="form-control" id="joinForm_pw" >
+                                <input type="hidden" id="JOIN_PW" name="pw" value="default">
                             </div>
                             <div class="form-group">
                                 <label for="email" >email</label>

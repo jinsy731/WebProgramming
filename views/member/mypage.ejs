@@ -1,0 +1,73 @@
+<html>
+    <head>
+        <title>
+        </title>
+        <% include ../source.ejs%>
+        <script src="/public/javascripts/mypage.js"></script>
+        <style>
+            #mypageNav {
+                font-size : 12px;
+            }
+            #mypageNav > a {
+                color : #000;
+            }
+            #mypageNav > a:hover {
+                color : #727272;
+            }
+            #mypage hr {
+                margin-top: 0.5rem;
+                margin-bottom: 0.5rem;
+                border: 0;
+                border-top: 0.05rem solid rgba(0, 0, 0, 0.1);
+            }
+            #mypage .custom-hr {
+                margin-top: 1.5rem;
+                margin-bottom: 1.5rem;
+                border-top: 0.25em solid #2c3e50;
+            }
+            #mypageContent span{
+                font-size : 10px;
+                color : #979797;
+                margin-right : 20px;
+            }
+            #userInfo p {
+                font-size : 15px;
+                padding-top : 0.75rem;
+                padding-bottom: 0.75rem;
+            }
+        </style>
+
+    </head>
+
+    <body>
+        <%- include('../navbar.ejs', { html : ui });%>
+
+        <section class="page-section">
+            <div class="container" id="mypage" style="max-width: 720px">
+                <div class="row">
+                    <div class="col">
+                        <p><h5>MY PAGE</h5></p>
+                        <hr class="custom-hr">
+                    </div>
+                </div>
+                <nav class="nav" id="mypageNav">
+                    <a href="#" class="nav-link" id="viewInfo">회원정보 조회</a>
+                    <a href="#" class="nav-link" id="secession">회원 탈퇴</a>
+                    <a href="#" class="nav-link" id="changePassword">비밀번호 변경</a>
+                    <a href="#" class="nav-link" id="viewBid">경매 낙찰 내역 조회</a>
+                    <a href="#" class="nav-link" id="viewMyProduct">나의 상품</a>
+                </nav>
+                <hr>
+                <div class="row ml-5 mt-3" >
+                    <div class="col" id="mypageContent">
+
+                    </div>
+                </div>
+
+            </div>
+
+        </section>
+
+        <% include ../footer.ejs%>
+    </body>
+</html>

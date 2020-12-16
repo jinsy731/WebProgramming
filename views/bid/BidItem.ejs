@@ -37,7 +37,7 @@
                     minute = 0;
                     hour = 0;
                     $('#bid_countdown').text(hour+":"+minute+":"+second);
-                    $('#ask_btn').attr('disabled', true);
+                    //$('#ask_btn').attr('disabled', 'disabled');
                     clearInterval(timer);
                 }
 
@@ -46,82 +46,100 @@
 
 
             $('#ask_btn').click( function() {
-                if('#')
-                loginCheck(updatePrice(sendPrice));
+                if($('#ask_price').val() === '') {
+                    alert("가격을 입력해주세요");
+                    return;
+                }
+                if(parseInt($('#ask_price').val()) < parseInt($('#start_price').text()) ||
+                    parseInt($('#ask_price').val()) < parseInt($('#current_price').text()) ||
+                    parseInt($('#ask_price').val()) > parseInt($('#max_price').text())) {
+                    alert('입력 가격은 현재가보다 높고, 최고가보다 낮아야합니다.');
+                    return;
+                }
+
+                loginCheck()
+                .then(updatePrice)
+                .then(sendPrice);
             });
 
         });// document ready end
 
-        function loginCheck(callback) {
-            $.ajax({
-                url : '/auth/logincheck',
-                type : "get",
-                dataType : "text",
 
-                success : function(result) {
-                    if (data.trim() === 'false') {
-                        alert('로그인 후 이용 가능합니다.');
+        // ajax의 작동 순서를 제어하기 위해 Promise를 사용
+        function loginCheck() {
+            return new Promise(function(resolve, reject) {
+                $.ajax({
+                    url : '/auth/logincheck',
+                    type : "get",
+                    dataType : "text",
+
+                    success : function(result) {
+                        if (result.trim() === 'false') {
+                            alert('로그인 후 이용 가능합니다.');
+                            reject();
+                        }
+                        else
+                            resolve();
                     }
-                    else if(data.trim() === 'true') {
-                        callback();
-                    }
-                }
+                });
             })
         }
 
-        function updatePrice(callback) {
-            $.ajax({
-                url : '/bid/updateprice/'+$('#item_no').val(),
-                type : "get",
-                dataType : "text",
 
-                success : function(data) {
-                    console.log(data);
-                    if(parseInt(data) > parseInt($('#ask_price').text())) {
-                        alert('data' + data + 'current_price' + $('#ask_price').text());
-                        alert('현재 최고가가 갱신되었습니다. 다시 시도해주시기 바랍니다.');
-                        location.reload();
+        function updatePrice() {
+            return new Promise( function(resolve, reject) {
+                $.ajax({
+                    url : '/bid/updateprice/'+$('#item_no').val(),
+                    type : "get",
+                    dataType : "text",
+
+                    success : function(data) {
+                        console.log(data);
+                        if(parseInt(data) > parseInt($('#ask_price').val())) {
+                            alert('data' + data + 'current_price' + $('#ask_price').text());
+                            alert('현재 최고가가 갱신되었습니다. 다시 시도해주시기 바랍니다.');
+                            location.reload();
+                        }
+                        else {
+                            resolve();
+                        }
+
+                    },
+                    error : function() {
+                        console.log('error');
                     }
-                    else {
-                        callback();
-                    }
-                },
-                complete : function() {
-                    console.log('complete');
-                },
-                error : function() {
-                    console.log('error');
-                }
-            }); // update Current Price
+                }); // update Current Price
+            })
         }
 
         function sendPrice() {
-            var data = {
-                price :$('#ask_price').val(),
-                item_no : $('#item_no').val()
-            }
-
-            if(data.price < parseInt($('#current_price').text()) || data.price > parseInt($('#max_price').text())) {
-                alert('입력 가격은 현재가보다 높고, 최고가보다 낮아야합니다.');
-                return false;
-            }
-            $.ajax({
-                url : "/bid/askprice",
-                type : "post",
-                data : data,
-                dataType : "text",
-
-                success : function(result) {
-                    console.log(result);
-                    location.reload();
-                },
-
-                error : function(err) {
-                    console.log(err);
+            return new Promise(function(resolve, reject) {
+                var data = {
+                    price :$('#ask_price').val(),
+                    item_no : $('#item_no').val()
                 }
 
-            }); // insert ask_price
+                $.ajax({
+                    url : "/bid/askprice",
+                    type : "post",
+                    data : data,
+                    dataType : "text",
+
+                    success : function(result) {
+                        alert(result.trim());
+                        location.reload();
+                        resolve();
+                    },
+
+                    error : function(err) {
+                        console.log(err);
+                        reject();
+                    }
+
+                }); // insert ask_price
+            })
         }
+
     </script>
 </head>
 
@@ -129,9 +147,15 @@
 <%- include('../navbar.ejs', { html : ui });%>
 <section class="page-section mt-5">
     <div class="container shadow-sm" style="max-width: 1080px">
+        <div class="row">
+            <div class="col">
+                <p><h5>상품 상세</h5></p>
+                <hr class="custom-hr">
+            </div>
+        </div>
         <div class="row justify-content-center">
             <div class="col-md-6 col-lg-6 col-sm-6">
-                <img class="bid-item-img" src = "<%= item.item_image_src%>" style="width : 500px; height: 500px; object-fit: cover" >
+                <img class="img-fluid bid-item-img" src = "<%= item.item_image_src%>" style="width : 500px; height: 500px; object-fit: cover" >
             </div>
 
             <div class="col-md-6 col-lg-6 col-sm-6 bid-item">
@@ -152,7 +176,7 @@
                 <input type="hidden" id="item_date" value="<%= item.item_date%>">
                 <input type="hidden" id="item_no" value="<%= item.item_no%>">
                 <input type="text" id="ask_price">
-                <button class="btn btn-outline-success bid-btn-text ml-4" id="ask_btn" disabled="false">입찰</button>
+                <button class="btn btn-outline-success bid-btn-text ml-4" id="ask_btn">입찰</button>
                 <div><hr></div>
                 <p><%= item.item_description%></p>
 

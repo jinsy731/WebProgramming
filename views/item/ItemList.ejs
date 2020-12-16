@@ -9,22 +9,32 @@
         <%- include('../navbar.ejs', { html : ui });%>
         <section class="page-section mt-5">
             <div class="container" style="">
-                <div class="row justify-content-center mb-5">
-                    <p style="font-family: 'Helvetica Neue'" >
-                        상품 목록
-                    </p>
+                <div class="row">
+                    <div class="col">
+                        <p><h5>중고거래</h5></p>
+                        <hr class="custom-hr">
+                    </div>
                 </div>
+                <div class="row justify-content-center mb-5">
+                    <div class="col-lg-6 col-md-6 col-sm-6">
+                        <p style="font-family: 'Helvetica Neue'" >
+
+                        </p>
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-6">
+                        <% include ./ItemSearchBar.ejs%>
+                    </div>
                 <div><hr></div>
                 <div class="row justify-content-center mt-3"  id="itemContainer">
 
                     <%for(var i=0; i < _data.length; i++) { var url = "https://daangn.com"+ _data[i].url;%>
-                        <div class="col-lg-4 col-md-4 col-sm-4">
+                        <div class="col-lg-4 col-md-4 col-sm-4 bid-item">
                             <a href=<%= url%> >
                                 <img class="rounded" src=<%= _data[i].image_url%> alt=<%= _data[i].image_alt%> style="max-width: 100%; height : auto">
                             </a>
-                                <p> <%= _data[i].description%></p>
-                                <p><%= _data[i].region%></p>
-                                <p><%= _data[i].price%></p>
+                                <p class="mt-3 font-weight-bold"><%= _data[i].description%></p>
+                                <p><span class="bid-item-sub mr-2">지역</span><%= _data[i].region%></p>
+                                <p><span class="bid-item-sub mr-2">가격</span><%= _data[i].price%></p>
 
                         </div>
                     <% } %>
@@ -34,6 +44,7 @@
                     <button class="btn btn-block btn-primary" type="button" id="moreBtn"><i class="fas fa-angle-down"></i>더보기</button>
                 </div>
 
+            </div>
             </div>
         </section>
 
