@@ -6,6 +6,7 @@ var path = require('path');
 var multer = require('multer');
 var moment = require('moment');
 var fs = require('fs');
+var gm = require('gm');
 
 var storage = multer.diskStorage({
     destination: function (req, file, cb) {
@@ -36,7 +37,7 @@ var upload = multer({
 router.get('/itemlist', function(req, res) {
 
     if(req.query.item == null) {
-        db.query('select * from bid limit ?,?', [0, 10],  function(err, results) {
+        db.query('select * from bid where item_bid_end_date > current_date limit ?,?', [0, 10],  function(err, results) {
             if (err) {
                 console.error(err);
                 throw err;
@@ -168,6 +169,8 @@ router.post('/additem_process', upload.single('item_image'), function(req, res) 
         var date = moment().format('YYYY-MM-DD HH:mm:ss');
         var end_date = moment().add(parseInt(post.durationRadio), 'hours').format('YYYY-MM-DD HH:mm:ss');
         var insert_data = [post.item_name, req.user.ID, date, post.item_start_price, post.item_max_price, null, post.item_description,'/'+req.file.destination+req.file.filename, null, null, end_date];
+
+        var filesrc = '/'+req.file.destination+req.file.filename;
 
         db.query('insert into bid(item_name, item_owner, item_date, item_start_price, item_max_price, item_bid_update, item_description, item_image_src, item_current_price, item_current_bid_id, item_bid_end_date) values(?,?,?,?,?,?,?,?,?,?,?)' ,
             insert_data, function(err) {

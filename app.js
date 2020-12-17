@@ -47,6 +47,16 @@ app.use(express.static(path.join(__dirname)));
 // express.static 미들웨어의 path 설정값을 위와 같이 해야 /public 으로 접근할 때 오류나지 않음.
 app.use(flash());
 // connect-flash 미들웨어는 express-session과 cookie-parser를 사용하므로 이것들보다 뒤에 위치해야함.
+app.use(helmet.dnsPrefetchControl());
+app.use(helmet.expectCt());
+app.use(helmet.frameguard());
+app.use(helmet.hidePoweredBy());
+app.use(helmet.hsts());
+app.use(helmet.ieNoOpen());
+app.use(helmet.noSniff());
+app.use(helmet.permittedCrossDomainPolicies());
+app.use(helmet.referrerPolicy());
+app.use(helmet.xssFilter());
 
 
 // router middleware use
